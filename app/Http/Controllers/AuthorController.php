@@ -16,7 +16,7 @@ class AuthorController extends Controller
     public function index()
     {
         $authors = Author::paginate(30);
-        return view('author.index', compact('authors'));
+        return view('authors.index', compact('authors'));
     }
 
     /**
@@ -27,7 +27,7 @@ class AuthorController extends Controller
     public function create()
     {
         $books = Book::get();
-        return view('author.form', compact('books'));
+        return view('authors.form', compact('books'));
     }
 
     /**
@@ -39,7 +39,7 @@ class AuthorController extends Controller
     public function store(AuthorRequest $request)
     {
         Author::create($request);
-        return redirect()->route('author.index');
+        return redirect()->route('authors.index');
     }
 
     /**
@@ -51,7 +51,7 @@ class AuthorController extends Controller
     public function show(Author $author)
     {
         $books = Book::get();
-        return view('author.show', compact('author', 'books'));
+        return view('authors.show', compact('author', 'books'));
     }
 
     /**
@@ -62,7 +62,7 @@ class AuthorController extends Controller
      */
     public function edit(Author $author)
     {
-        return view('author.form', compact('author'));
+        return view('authors.form', compact('author'));
     }
 
     /**
@@ -75,7 +75,7 @@ class AuthorController extends Controller
     public function update(Request $request, Author $author)
     {
         $author->update($request);
-        return redirect()->route('author.index');
+        return redirect()->route('authors.index');
     }
 
     /**
@@ -88,6 +88,6 @@ class AuthorController extends Controller
     public function destroy(Author $author)
     {
         $author->delete();
-        return redirect()->route('author.index');
+        return redirect()->route('authors.index');
     }
 }

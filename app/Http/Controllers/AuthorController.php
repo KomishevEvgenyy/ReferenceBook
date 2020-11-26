@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Author;
-use App\Book;
+use App\Http\Requests\AuthorRequest;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class AuthorController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -22,23 +23,22 @@ class AuthorController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
-        $books = Book::get();
-        return view('authors.form', compact('books'));
+        return view('authors.form');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param AuthorRequest $request
+     * @return Response
      */
     public function store(AuthorRequest $request)
     {
-        Author::create($request);
+        Author::create($request->all());
         return redirect()->route('authors.index');
     }
 
@@ -46,7 +46,7 @@ class AuthorController extends Controller
      * Display the specified resource.
      *
      * @param \App\Author $author
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(Author $author)
     {
@@ -58,7 +58,7 @@ class AuthorController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param \App\Author $author
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Author $author)
     {
@@ -68,13 +68,13 @@ class AuthorController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param AuthorRequest $request
      * @param \App\Author $author
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function update(Request $request, Author $author)
+    public function update(AuthorRequest $request, Author $author)
     {
-        $author->update($request);
+        $author->update($request->all());
         return redirect()->route('authors.index');
     }
 
@@ -82,7 +82,7 @@ class AuthorController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Author $author
-     * @return \Illuminate\Http\Response
+     * @return Response
      * @throws \Exception
      */
     public function destroy(Author $author)

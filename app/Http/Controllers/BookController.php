@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Author;
 use App\Book;
-use Illuminate\Http\Request;
+use App\Http\Requests\BookRequest;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -15,7 +17,8 @@ class BookController extends Controller
     public function index()
     {
         $books = Book::paginate(15);
-        return view('books.index', compact('books'));
+        $authors = Author::get();
+        return view('books.index', compact('books', 'authors'));
     }
 
     /**
@@ -25,25 +28,32 @@ class BookController extends Controller
      */
     public function create()
     {
-        return view('books.form');
+        $authors = Author::get();
+        return view('books.form', compact('authors'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param BookRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(BookRequest $request)
     {
-        Book::create($request);
+        $params = $request->all();
+        unset($params['image']);
+        if ($request->has('image')) {
+            $params['image'] = $request->file('image')->store('books', 'public');
+        }
+
+        Book::create($params);
         return redirect()->route('books.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Book  $book
+     * @param \App\Book $book
      * @return \Illuminate\Http\Response
      */
     public function show(Book $book)
@@ -54,35 +64,46 @@ class BookController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Book  $book
+     * @param \App\Book $book
      * @return \Illuminate\Http\Response
      */
     public function edit(Book $book)
     {
-        return view('books.form', compact('book'));
+        $authors = Author::get();
+        return view('books.form', compact('book', 'authors'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Book  $book
+     * @param BookRequest $request
+     * @param \App\Book $book
      * @return \Illuminate\Http\Response
      */
     public function update(BookRequest $request, Book $book)
     {
-        $book->update($request);
+        $params = $request->all();
+        unset($params['image']);
+        if ($request->has('image')) {
+            Storage::delete('public/' . $book->image);
+            $params['image'] = $request->file('image')->store('books', 'public');
+//          метод file указывает на тип поля в форме(для загрузки файлов это type='file') далее указываем
+//          метод store который первым параметром принимает имя папки где будут сохранятся файлы, а вторым параметром
+//          указываесятся имя используемого диска(который прописан в файле config/filesystem)
+        }
+        $book->update($params);
         return redirect()->route('books.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Book  $book
+     * @param \App\Book $book
      * @return \Illuminate\Http\Response
      */
     public function destroy(Book $book)
     {
+        Storage::delete('public/' . $book->image);
         $book->delete();
         return redirect()->route('books.index');
     }

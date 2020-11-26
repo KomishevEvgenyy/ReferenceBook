@@ -13,23 +13,25 @@ class AuthorRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
+
     /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
+     * @return string[]
      */
     public function rules()
     {
         return [
             'author_surname' => 'required|min:3|max:30',
             'author_name' => 'required|min:3|max:30',
-            'author_patronymic' => 'min:3|max:30',
+            'author_patronymic' => 'max:30',
         ];
     }
 
+    /**
+     * @return array|string[]
+     */
     public function messages()
     {
         return [
@@ -39,7 +41,6 @@ class AuthorRequest extends FormRequest
             'author_name.required' => 'Поле "Имя автора" обязательно для заполнение.',
             'author_name.min:3' => 'Поле "Имя автора" должно иметь минимум min:3 символов.',
             'author_name.max:30' => 'Поле "Имя автора" может быть максимум max:50 символов.',
-            'author_patronymic.min:3' => 'Поле "Отчество автора" должно иметь минимум min:3 символов.',
             'author_patronymic.max:30' => 'Поле "Отчество автора" может быть максимум max:50 символов.',
         ];
     }

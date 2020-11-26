@@ -11,24 +11,27 @@
                 <thead>
                 <tr class="row">
                     <th class="col-3">Название книги</th>
-                    <th class="col-3">Краткое описание</th>
+                    <th class="col-4">Краткое описание</th>
                     <th class="col-2">Автора книг</th>
-                    <th class="col-4">Действие</th>
+                    <th class="col-3">Действие</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($books as $book)
                     <tr class="row">
-                        <td class="col-3">{{ $book->book_name }}</td>
-                        <td class="col-3">{{ $book->description }}</td>
-
-                        @if($book->author_id == $book->autohors()->id)
-                            <td class="col-2">{{ $book->autohors()->author_surname }} {{ $book->autohors()->author_name }}</td>
-                        @endif
-                        <td class="col-4">
+                        <td class="col-3">
+                            <p class="font-weight-bold">{{ $book->book_name }}<p>
+                            <img src="{{ URL::asset('/storage/' . $book->image) }}">
+                        </td>
+                        <td class="col-4 text-justify">{{ $book->description }}</td>
+                        @foreach($authors as $author)
+                            @if($book->author_id == $author->id)
+                                <td class="col-2">{{ $author->author_surname }} {{ $author->author_name }}</td>
+                            @endif
+                        @endforeach
+                        <td class="col-3">
                             <div class="btn-group" role="group">
                                 <form method="POST" action="{{ route('books.destroy', $book) }}">
-                                    <a class="btn btn-success" href="{{ route('books.show', $book) }}">Открыть</a>
                                     <a class="btn btn-warning" href="{{ route('books.edit', $book) }}">Редактировать</a>
                                     @csrf
                                     @method('DELETE')

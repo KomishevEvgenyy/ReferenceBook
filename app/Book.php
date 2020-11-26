@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Book extends Model
 {
-    protected $fillable = ['book_name', 'description', 'image'];
+    protected $fillable = ['book_name', 'description', 'image', 'author_id'];
 
     /**
      * @return HasMany

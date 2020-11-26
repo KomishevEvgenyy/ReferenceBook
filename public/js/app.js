@@ -19330,7 +19330,23 @@ module.exports = function(module) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // $(document).ready(function () {
+//     $('#form').on('submit', function (e) {
+//         e.preventDefault();
+//
+//         $.ajax({
+//             type: 'POST',
+//             url: 'authors.store',
+//             data: $('#form').serialize(),
+//             success: function (data) {
+//                 console.log(data);
+//             },
+//             error: function (data) {
+//                 console.log('Ошибка ' + data);
+//             }
+//         });
+//     });
+// });
 
 /***/ }),
 

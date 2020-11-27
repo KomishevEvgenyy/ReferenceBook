@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Author;
 use App\Book;
 use App\Http\Requests\BookRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
@@ -12,11 +13,16 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::paginate(15);
+        if (!empty($request->sort)) {
+            $books = Book::all()->sortBy('book_name');
+        } else {
+            $books = Book::paginate(15);
+        }
         $authors = Author::get();
         return view('books.index', compact('books', 'authors'));
     }

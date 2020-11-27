@@ -6,17 +6,26 @@ use App\Author;
 use App\Http\Requests\AuthorRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class AuthorController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $authors = Author::paginate(30);
+        if (!empty($request->sort)) {
+            $authors = Author::paginate(15)->sortBy('author_surname');
+        } elseif (!empty($request->search)) {
+            $authors = Author::where('author_surname', $request->search)->
+            orWhere('author_name', $request->search)->get();
+        } else {
+            $authors = Author::paginate(15);
+        }
         return view('authors.index', compact('authors'));
     }
 
@@ -89,5 +98,12 @@ class AuthorController extends Controller
     {
         $author->delete();
         return redirect()->route('authors.index');
+    }
+
+    public function search(Request $request)
+    {
+        dd($request);
+        $authors = DB::table('authors')->where('author_surname', $request->search)->get();
+        return view('authors.search', compact('authors'));
     }
 }

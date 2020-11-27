@@ -19,3 +19,4 @@ Route::get('/', function () {
 
 Route::resource('books', 'BookController');
 Route::resource('authors', 'AuthorController');
+Route::get('authors/search', 'AuthorController@search')->name('authors.search');

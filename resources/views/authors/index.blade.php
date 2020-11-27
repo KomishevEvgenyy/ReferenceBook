@@ -2,9 +2,15 @@
 
 @section('title-block', 'Авторы')
 
-@section('catalog-name', 'авторов')
-
 @section('content')
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+        <h1 class="h2">Каталог авторов</h1>
+        <form action="{{ route('authors.index') }}" method="GET">
+            <input type="submit" value="Сортировать" class="btn btn-primary" name="sort" id="sort">
+            <a type="submit" class="btn btn-primary" href="{{ route('authors.index') }}">Сбросить</a>
+        </form>
+    </div>
     <div class="col-md-12">
         @isset($authors)
             <table class="table text-center">
@@ -43,7 +49,7 @@
                 @endforeach
                 </tbody>
             </table>
-            {{$authors->links()}}
+{{--            {{$authors->links()}}--}}
             <div class="btn-group" role="group">
                 <a type="button" class="btn btn-success" href="{{ route('authors.create') }}">Добавить автора</a>
             </div>

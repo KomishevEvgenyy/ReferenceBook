@@ -2,9 +2,15 @@
 
 @section('title-block', 'Книги')
 
-@section('catalog-name', 'книг')
-
 @section('content')
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+        <h1 class="h2">Каталог книг</h1>
+        <form action="{{ route('books.index') }}" method="GET">
+            <input type="submit" value="Сортировать" class="btn btn-primary" name="sort" id="sort">
+            <a type="submit" class="btn btn-primary" href="{{ route('books.index') }}">Сбросить</a>
+        </form>
+    </div>
     <div class="col-sm-12">
         @isset($books)
             <table class="table text-center">
@@ -21,7 +27,7 @@
                     <tr class="row">
                         <td class="col-3">
                             <p class="font-weight-bold">{{ $book->book_name }}<p>
-                            <img src="{{ URL::asset('/storage/' . $book->image) }}">
+                                <img src="{{ URL::asset('/storage/' . $book->image) }}">
                         </td>
                         <td class="col-4 text-justify">{{ $book->description }}</td>
                         @foreach($authors as $author)
@@ -43,7 +49,7 @@
                 @endforeach
                 </tbody>
             </table>
-            {{ $books->links() }}
+{{--            {{ $books->links() }}--}}
             <div class="btn-group" role="group">
                 <a class="btn btn-success" href="{{ route('books.create') }}">Добавить книгу</a>
             </div>

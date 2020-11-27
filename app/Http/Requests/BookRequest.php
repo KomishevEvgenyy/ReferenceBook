@@ -26,7 +26,7 @@ class BookRequest extends FormRequest
         $rules = [
             'book_name' => 'required|min:3|max:50|unique:books,book_name',
             'description' => 'min:15',
-            'image' => 'required|mimes:jpg,png|max:2048',
+            'image' => 'mimes:jpg,png|max:2048',
         ];
 
         if ($this->route()->named('books.update')) {
@@ -43,7 +43,6 @@ class BookRequest extends FormRequest
             'book_name.max:50' => 'Поле "Название книги" может быть максимум max:50 символов.',
             'book_name.unique' => 'Название такой книги уже существует.',
             'description.min:15' => 'Поле "Название книги" должно иметь минимум min:15 символов.',
-            'image.required' => '"Изображение" не выбрано.',
             'image.mimes:jpg,png' => 'Поле "Изображение" должно быть в формате mimes:jpg,png .',
             'image.max:2048' => 'Поле "Изображение" должно быть не более 2 Мб.',
         ];
